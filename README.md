@@ -1,0 +1,2 @@
+# AlgorythmerOgDataStuk_Oblig2
+ 
