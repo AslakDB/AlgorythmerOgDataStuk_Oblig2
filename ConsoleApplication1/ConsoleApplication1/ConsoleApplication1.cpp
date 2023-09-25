@@ -8,7 +8,9 @@
 using namespace std;
 using namespace std::chrono;
 
-int QuickSortAlgorithm(vector<int> &v, int start, int end)
+
+void swapping(vector<int> &v,int a, int b);
+int quick_sort_algorithm(vector<int> &Vector, int start, int end)
 {
     //Recursive function 1
     
@@ -16,46 +18,61 @@ int QuickSortAlgorithm(vector<int> &v, int start, int end)
         return 0;
 
     // pivot is the first element
-    int pivot = v[start];
-    int i = start + 1;
-    int j = end;
-    int temp;
     
-    while (i <= j)
+    int TempStart = start;
+    int tempEnd = end;
+    int pivot = Vector[start];
+    
+    
+    while (TempStart < end || tempEnd > start)
     {
-        while (v[i] <= pivot && i <= end)
-            i++;
-        while (v[j] >= pivot && j >= start + 1)
-            j--;
+        while (Vector[TempStart] < pivot)
+            TempStart++;
+        while (Vector[tempEnd] > pivot)
+            tempEnd--;
         
-        if (i < j)
+        if (TempStart <= tempEnd)
         {
-            temp = v[i];
-            v[i] = v[j];
-            v[j] = temp;
+            swapping(Vector, TempStart, tempEnd);
+            TempStart++;
+            tempEnd--;
         }
+
+        
+           else {
+                if (TempStart < end)
+                quick_sort_algorithm(Vector,TempStart,end);
+               
+                if (tempEnd > start)
+                quick_sort_algorithm(Vector, start, tempEnd);
+               
+                return 0;
+            }
+        
     }
     
-    temp = v[start];
-    v[start] = v[j];
-    v[j] = temp;
-    
-    QuickSortAlgorithm(v, start, j - 1);
-    QuickSortAlgorithm(v, j + 1, end);
-    
-    return 0;
 }
 
-void QuickSortPrint()
+void swapping(vector<int> &v,int a, int b)
+{
+   
+    int temp = v[a];
+    v[a] = v[b];
+    v[b] = temp;
+}
+
+void quick_sort_print() 
 {
     //A function to keep main clean
 
     // start measure time taken by function to sort
     auto begin = high_resolution_clock::now();
     
-    vector<int> v;
-   
-    const int size = 10;
+    
+    //srand(time(NULL));
+    vector<int> v ;
+    const int size = 1000;
+    
     for (int i = 0; i < size; ++i)
     {
         v.push_back(1 + rand() % 100);
@@ -69,7 +86,8 @@ void QuickSortPrint()
     cout << endl;
 
     
-    QuickSortAlgorithm( v, 0, size - 1);
+    quick_sort_algorithm( v, 0, size-1);
+    
     cout<< "After sorting: " << endl;
     for (int i = 0; i < size; ++i)
     {
@@ -83,24 +101,155 @@ void QuickSortPrint()
     cout << endl << "Time taken by quicksort function: " << elapsed.count() << " milliseconds" << endl;
 }
 
-int MergeSortAlgorithm( )
+int merge_sort_algorithm(int arr[], int left, int mid, int right)
 {
+    int const subarray1 = mid - left + 1;
+    int const subarray2 = right - mid;
+
+     auto *leftTemp = new int [subarray1],
+         *rightTemp =  new int[subarray2];
+
+    for (int i = 0; i < subarray1; ++i)
+        leftTemp[i] = arr[left + i];
+    for (int j = 0; j < subarray2; ++j)
+        rightTemp[j] = arr[mid + 1 + j];
+
+    int T_Left= 0;
+    int T_Right= 0;
+    int T_Mid= left;
+
+    while (T_Left< subarray1 && T_Right< subarray2)
+    {
+        if (leftTemp[T_Left] <= rightTemp[T_Right])
+        {
+            arr[T_Mid] = leftTemp[T_Left];
+            T_Left++;
+        }
+        else
+        {
+            arr[T_Mid] = rightTemp[T_Right];
+            T_Right++;
+        }
+        T_Mid++;
+    }
+
+    while (T_Left < subarray1)
+    {
+        arr[T_Mid] = leftTemp[T_Left];
+        T_Left++;
+        T_Mid++;
+    }
+    while (T_Right < subarray2)
+    {
+        arr[T_Mid] = rightTemp[T_Right];
+        T_Right++;
+        T_Mid++;
+    }
     return 0;
 }
 
-
-int BubbleSortAlgorithm( )
+int merge(int arr[], int left, int right)
 {
+if (left >= right)
+        return 0;
+    
+    int mid = left + (right - left) / 2;
+
+    merge(arr, left, mid);
+    merge(arr, mid + 1, right);
+    merge_sort_algorithm(arr, left, mid, right);
+    
+}
+
+void merge_sort_print()
+{
+    auto begin = high_resolution_clock::now();
+   int Size = 1000;
+    int Array[1000];
+   for (int i = 0; i < Size; ++i)
+   {
+       Array[i] = rand() % 1000;
+   }
+
+    cout<< "Before sorting: " << endl;
+    for (int i = 0; i < Size; ++i)
+    {
+        cout << Array[i] << " ";
+    }
+
+    merge(Array, 0, Size - 1);
+
+    cout<< "After sorting: " << endl;
+    for (int i = 0; i < Size; ++i)
+    {
+        cout << Array[i] << " ";
+    }
+    auto end = high_resolution_clock::now();
+    auto elapsed = duration_cast<milliseconds>(end - begin);
+    cout << endl << "Time taken by Merge_sort function: " << elapsed.count() << " milliseconds" << endl;
+}
+
+
+
+
+int bubble_sort_algorithm(int arr[], int size)
+
+{
+    int i, j;
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+        {
+            if (arr[j]> arr[j + 1])
+            {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
     return 0;
+}
+
+void print_bubble_sort()
+{
+    auto begin = high_resolution_clock::now();
+
+    int Array_Size = 1000;
+    int Array[1000];
+    for (int i = 0; i < Array_Size -1; ++i)
+    {
+      Array[i] = rand() % 1000;
+    }
+
+    cout<< "Before sorting: " << endl;
+    for (int i = 0; i < Array_Size -1; ++i)
+    {
+        cout << Array[i] << " ";
+    }
+    cout << endl;
+
+    
+    bubble_sort_algorithm(Array, Array_Size -1);
+
+    cout<< "After sorting: " << endl;
+    for (int i = 0; i < Array_Size -1; ++i)
+    {
+        cout << Array[i] << " ";
+    }
+    auto end = high_resolution_clock::now();
+
+    auto elapsed = duration_cast<milliseconds>(end - begin);
+    cout << endl << "Time taken by bubblesort function: " << elapsed.count() << " milliseconds" << endl;
 }
 
 
 
 int main(int argc, char* argv[])
 {
-QuickSortPrint();
-    
+  //quick_sort_print();
+    merge_sort_print();
+    //print_bubble_sort();
     return 0;
+
     
 }
 
