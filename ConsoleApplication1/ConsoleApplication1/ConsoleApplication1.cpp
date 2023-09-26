@@ -71,7 +71,7 @@ void quick_sort_print()
     
     //srand(time(NULL));
     vector<int> v ;
-    const int size = 1000;
+    const int size = 10000;
     
     for (int i = 0; i < size; ++i)
     {
@@ -101,19 +101,22 @@ void quick_sort_print()
     cout << endl << "Time taken by quicksort function: " << elapsed.count() << " milliseconds" << endl;
 }
 
-int merge_sort_algorithm(int arr[], int left, int mid, int right)
+void merge_sort_algorithm(int arr[], int left, int mid, int right)
 {
     int const subarray1 = mid - left + 1;
     int const subarray2 = right - mid;
 
-     auto *leftTemp = new int [subarray1],
-         *rightTemp =  new int[subarray2];
+     int *leftTemp = new int [subarray1];
+     int *rightTemp =  new int[subarray2];
 
+
+    //here we copy data to temp arrays each itteraion
     for (int i = 0; i < subarray1; ++i)
         leftTemp[i] = arr[left + i];
     for (int j = 0; j < subarray2; ++j)
         rightTemp[j] = arr[mid + 1 + j];
 
+    
     int T_Left= 0;
     int T_Right= 0;
     int T_Mid= left;
@@ -145,7 +148,10 @@ int merge_sort_algorithm(int arr[], int left, int mid, int right)
         T_Right++;
         T_Mid++;
     }
-    return 0;
+
+    delete leftTemp;
+    delete rightTemp;
+    
 }
 
 int merge(int arr[], int left, int right)
@@ -164,11 +170,11 @@ if (left >= right)
 void merge_sort_print()
 {
     auto begin = high_resolution_clock::now();
-   int Size = 1000;
-    int Array[1000];
+   int Size = 10000;
+    int Array[10000];
    for (int i = 0; i < Size; ++i)
    {
-       Array[i] = rand() % 1000;
+       Array[i] = rand() % 100;
    }
 
     cout<< "Before sorting: " << endl;
@@ -213,8 +219,8 @@ void print_bubble_sort()
 {
     auto begin = high_resolution_clock::now();
 
-    int Array_Size = 1000;
-    int Array[1000];
+    int Array_Size = 10000;
+    int Array[10000];
     for (int i = 0; i < Array_Size -1; ++i)
     {
       Array[i] = rand() % 1000;
@@ -247,7 +253,7 @@ int main(int argc, char* argv[])
 {
   //quick_sort_print();
     merge_sort_print();
-    //print_bubble_sort();
+   // print_bubble_sort();
     return 0;
 
     
